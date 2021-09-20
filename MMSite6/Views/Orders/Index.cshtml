@@ -1,0 +1,114 @@
+﻿@model PaginatedList<MMSite6.Models.Order>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Currently Pending Orders</h1>
+
+<p>
+	<a asp-action="Create">Place new Order</a>
+</p>
+
+@using (Html.BeginForm())
+{
+<form method="get" action="~/">
+	<p class="text-primary">
+		Find by Status: 
+		<select name="statusString" asp-items="ViewBag.statuses"></select>
+	</p>
+
+	<p class="text-primary">
+		Find by Summary and Customer: @Html.TextBox("SearchString",null, new { @style = " height:30px; " })
+		<input type="submit" class="btn btn-primary btn-sm" value="Search" style="height: 32px"/>
+	</p>
+</form>
+		}
+
+		<table class="table table-hover">
+			<thead class="text-primary">
+				<tr class="text-primary">
+					<th>
+						@Html.ActionLink("summary", "Index", new { sortOrder = ViewBag.NameSortParm })
+					</th>
+					<th>
+						@Html.ActionLink("Order Date", "Index", new { sortOrder = ViewBag.DateSortParm })
+					</th>
+					<th>
+						@Html.ActionLink("status", "Index", new { sortOrder = ViewBag.StatusSortParm })
+					</th>
+					@if (User.Identity.IsAuthenticated)
+					{
+						@if (User.IsInRole("Admin"))
+						{
+							<th>
+								@Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.CustSortParm })
+							</th>
+						}
+					}
+					<th>
+
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr class="text-primary">
+						<td>
+							@Html.DisplayFor(modelItem => item.summary)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.orderDate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.status)
+						</td>
+						@if (User.Identity.IsAuthenticated)
+						{
+							@if (User.IsInRole("Admin"))
+							{
+								<td>
+									@Html.DisplayFor(modelItem => item.user.firstName)
+									@Html.DisplayFor(modelItem => item.user.lastName)
+								</td>
+							}
+						}
+						<td>
+							<a asp-action="Details" asp-route-id="@item.orderId">Orders Details</a>
+							@if (User.Identity.IsAuthenticated)
+							{
+								@if (User.IsInRole("Admin"))
+								{
+									<a> | </a>
+									<a asp-action="Edit" asp-route-id="@item.orderId">Edit Order</a>
+								}
+							}
+						</td>
+
+					</tr>
+					<p>@ViewBag.itemCollection</p>
+				}
+			</tbody>
+		</table>
+		@{
+			var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+			var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+		}
+
+		<a asp-action="Index"
+		   asp-route-sortOrder="@ViewData["CurrentSort"]"
+		   asp-route-pageNumber="@(Model.PageIndex - 1)"
+		   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+		   asp-route-currentStatus="@ViewData["CurrentStatus"]"
+		   class="btn btn-default @prevDisabled">
+			Previous
+		</a>
+		<a asp-action="Index"
+		   asp-route-sortOrder="@ViewData["CurrentSort"]"
+		   asp-route-pageNumber="@(Model.PageIndex + 1)"
+		   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+		   asp-route-currentStatus="@ViewData["CurrentStatus"]"
+		   class="btn btn-default @nextDisabled">
+			Next
+		</a>

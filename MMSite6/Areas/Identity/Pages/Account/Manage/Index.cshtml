@@ -26,42 +26,47 @@
                 }
                 else
                 {
+
                     <input asp-for="Input.Email" class="form-control" />
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link"></button>
                 }
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-            <div class="form-group">
-                <label asp-for="Input.firstName"></label>
-                <input asp-for="Input.firstName" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.lastName"></label>
-                <input asp-for="Input.lastName" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.businessAddress"></label>
-                <input asp-for="Input.businessAddress" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.businessCity"></label>
-                <input asp-for="Input.businessCity" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.businessPostal"></label>
-                <input asp-for="Input.businessPostal" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.companyName"></label>
-                <input asp-for="Input.companyName" class="form-control" />
-            </div>
+                <div class="form-group">
+                    <label asp-for="Input.firstName"></label>
+                    <input asp-for="Input.firstName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.lastName"></label>
+                    <input asp-for="Input.lastName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.businessAddress"></label>
+                    <input asp-for="Input.businessAddress" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.businessCity"></label>
+                    <input asp-for="Input.businessCity" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.businessPostal"></label>
+                    <input asp-for="Input.businessPostal" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.companyName"></label>
+                    <input asp-for="Input.companyName" class="form-control" />
+                </div>
 
-            <label asp-for="Input.PhoneNumber"></label>
-            <input asp-for="Input.PhoneNumber" class="form-control" />
-            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-</div>
+                <label asp-for="Input.PhoneNumber"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+
+                <label asp-for="Input.dateCreated"></label>
+                <input asp-for="Input.dateCreated" class="form-control" disabled />
+
+            </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>

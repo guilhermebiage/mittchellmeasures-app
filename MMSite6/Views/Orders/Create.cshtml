@@ -1,0 +1,91 @@
+﻿@model MMSite6.Models.Order
+<!DOCTYPE HTML>
+
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<h1>Place Blueprint Order</h1>
+<style>
+	#feild {
+		display: inline-block;
+		width: 550px;
+		margin-bottom: 50px;
+	}
+
+	footer {
+		visibility: hidden;
+	}
+</style>
+
+<div class="alert alert-dismissible alert-warning">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4 class="alert-heading">Instructions</h4>
+	<p class="mb-0">Under the 'Order' section, enter a brief summary and a detailed description regarding your order. Under the 'Location' section, please enter the full address and square footage of a location, then click add. You may add multiple locations to request for blue prints. Once you have filled out all the fields, click 'Submit Order'. </p>
+	<p class="pt-3">
+		Every floor plan is hand measured and drawn with attention to detail through out the process.
+		To have a property measured and a floor plan created it will cost $200 for the first 1,000 square feet or less,
+		with every additional square foot costing $0.25. If you would like to order multiple floor plans at a time it will cost $0.20 per square foot
+		for the second property after the initial $200 for the first 1,000 square feet and only $0.15 per square foot for the third and any other additional plans ordered
+	</p>
+</div>
+
+<div class="row" id="feild">
+	<div class="col-md-4">
+		<h4>Order</h4>
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="summary" class="control-label text-primary">Summary</label><br />
+				<input asp-for="summary" class="form-control" style="width:350px" />
+				<span asp-validation-for="summary" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="desc" class="control-label text-primary">Description</label>
+				<textarea asp-for="desc" class="form-control" style="height:90px; width:350px"></textarea>
+				<span asp-validation-for="desc" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="desc" class="control-label text-primary">Estimated Total Cost</label>
+				<textarea disabled="disabled" id="totalCost" class="form-control" style="height:50px; width:180px"></textarea>
+			</div>
+			<div class="form-group">
+				<label asp-for="desc" class="control-label text-primary">Deposit</label>
+				<textarea disabled="disabled" id="deposit" class="form-control" style="height:50px; width:180px"></textarea>
+			</div>
+			<p>@ViewBag.itemCollection</p>
+			<div class="form-group">
+				<input type="submit" value="Submit Order" class="btn btn-primary" />
+			</div>
+			<br /><br />
+		</form>
+	</div>
+</div>
+<div class=" form-group col-md-4" id="feild" style=" position: absolute;">
+	<div>
+		<h4 class="mt-3">Locations</h4>
+		<form action="javascript:void(0);" method="POST" onsubmit="addItem()" class="mt-3">
+			<input type="text" id="add-address" placeholder="Address" style="width:290px" class="form-control mt-2">
+			<input type="text" id="add-sqft" placeholder="Approx. Sqft" style="width:290px" class="form-control mt-2">
+			<input type="submit" value="Add Location" class="btn btn-outline-secondary mt-3">
+		</form>
+		<table id="item" class="table-sm table-bordered mt-3">
+			<thead class="table-dark">
+				<tr>
+					<th>Address</th>
+					<th>Approx. SqFt</th>
+					<th>Estimated Cost</th>
+					<th>Remove</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+<div>
+	<p class="text-danger">@ViewBag.EmptyItems</p>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

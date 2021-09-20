@@ -15,13 +15,12 @@ namespace MMSite6.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
-                services.AddDbContext<MMSite6Context>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("MMSite6ContextConnection")));
+            builder.ConfigureServices((context, services) =>
+            {
 
                 services.AddDefaultIdentity<MMSite6User>()
-                    .AddEntityFrameworkStores<MMSite6Context>();
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<MMSite6Context>();
             });
         }
     }

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MMSite6.Models.Order>
+
+@{
+    ViewData["Title"] = "Incomplete Orders";
+}
+
+<h1>Incomplete Orders</h1>
+
+<table class="table text-primary">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.summary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.orderDate)
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.user.companyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.user.Email)
+            </th>
+            <th>
+                Phone Number
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="text-primary">
+            <td>
+                @Html.DisplayFor(modelItem => item.summary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.orderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.user.firstName)
+                @Html.DisplayFor(modelItem => item.user.lastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.user.companyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.user.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.user.PhoneNumber)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

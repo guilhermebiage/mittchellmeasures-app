@@ -1,0 +1,38 @@
+﻿@model MMSite6.Models.Item
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Item</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="address" class="control-label"></label>
+                <input asp-for="address" class="form-control" />
+                <span asp-validation-for="address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="sqft" class="control-label"></label>
+                <input asp-for="sqft" class="form-control" />
+                <span asp-validation-for="sqft" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Add" onclick="location.href='@Url.Action("AddItem", "Orders")'" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

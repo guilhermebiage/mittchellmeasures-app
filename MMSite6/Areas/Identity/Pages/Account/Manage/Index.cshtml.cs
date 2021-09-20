@@ -43,33 +43,44 @@ namespace MMSite6.Areas.Identity.Pages.Account.Manage
 
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(30)]
             [Display(Name = "First Name")]
             public string firstName { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(30)]
             [Display(Name = "Last Name")]
             public string lastName { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [RegularExpression(@"^[A-Za-z0-9]+(?:\s[A-Za-z0-9'_-]+)+$", ErrorMessage = "Not a valid address")]
             [Display(Name = "Business Address")]
             public string businessAddress { get; set; }
 
+            [DataType(DataType.Date)]
+            [Display(Name = "Date Created")]
+            public DateTime dateCreated { get; set; }
+
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(30)]
             [Display(Name = "Business City")]
             public string businessCity { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [RegularExpression(@"[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] ?[0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]", ErrorMessage = "Not a valid postal code")]
             [Display(Name = "Business Postal Code")]
             public string businessPostal { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(50)]
             [Display(Name = "Company Name")]
             public string companyName { get; set; }
+
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -102,7 +113,8 @@ namespace MMSite6.Areas.Identity.Pages.Account.Manage
                 businessPostal = user.businessPostal,
                 companyName = user.companyName,
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                dateCreated = user.dateCreated
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -206,10 +218,12 @@ namespace MMSite6.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+				"Account Verification",
+				$"Thank you for signing up to the Mitchell Measures website!</a>.<br>" +
+						$"Please verify your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." +
+						$"<img src='https://mitchellmeasuresstorage.blob.core.windows.net/uploadblob92b2ac74-4577-4360-8891-4d4da8aaa50f/logo.png' style='width: 186px; height: 95px;' cursor: 'pointer';></img>");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+			StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
         }
     }

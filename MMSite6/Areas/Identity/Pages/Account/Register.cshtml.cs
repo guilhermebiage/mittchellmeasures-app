@@ -43,37 +43,53 @@ namespace MMSite6.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
+            [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Not a valid email")]
             public string Email { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(30)]
             [Display(Name = "First Name")]
             public string firstName { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(30)]
             [Display(Name = "Last Name")]
             public string lastName { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(50)]
+            [RegularExpression(@"^[A-Za-z0-9]+(?:\s[A-Za-z0-9'_-]+)+$", ErrorMessage = "Not a valid address")]
             [Display(Name = "Business Address")]
             public string businessAddress { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(30)]
             [Display(Name = "Business City")]
             public string businessCity { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [RegularExpression(@"[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] ?[0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]", ErrorMessage = "Not a valid postal code")]
             [Display(Name = "Business Postal Code")]
             public string businessPostal { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
+            [StringLength(50)]
             [Display(Name = "Company Name")]
             public string companyName { get; set; }
+
+            [Phone]
+            [Display(Name = "Phone Number")]
+            [DataType(DataType.Text)]
+            public string PhoneNumber { get; set; }
+
+            [Display(Name = "Date Created")]
+            public DateTime dateCreated { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -105,12 +121,19 @@ namespace MMSite6.Areas.Identity.Pages.Account
                     businessPostal = Input.businessPostal,
                     companyName = Input.companyName,
                     UserName = Input.Email,
-                   Email = Input.Email
+                    Email = Input.Email,
+                    PhoneNumber = Input.PhoneNumber,
+                    dateCreated = System.DateTime.Now
+
+
+
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    var currentUser = _userManager.FindByNameAsync(user.UserName).Result;
+                    await _userManager.AddToRoleAsync(currentUser, "User");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
@@ -119,10 +142,12 @@ namespace MMSite6.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+					await _emailSender.SendEmailAsync(Input.Email, "Account Verification",
+	$"Thank you for signing up to the Mitchell Measures website!</a>.<br>" +
+	$"Please verify your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." +
+	$"<img src='https://mitchellmeasuresstorage.blob.core.windows.net/uploadblob92b2ac74-4577-4360-8891-4d4da8aaa50f/logo.png' style='width: 186px; height: 95px;' cursor: 'pointer';></img>");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+					await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

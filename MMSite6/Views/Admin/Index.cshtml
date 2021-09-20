@@ -1,0 +1,39 @@
+﻿
+@{
+	ViewData["Title"] = "Index";
+}
+<style>
+	#stats {
+		float: right;
+		margin-right: 10px;
+	}
+	#buttons *{
+		margin-bottom: 5px;
+		width:250px;
+	}
+</style>
+
+<h1>Admin Panel</h1>
+<br />
+<div>
+    <div style="float:left;margin-right: 150px">
+        <h3>Statistics</h3>
+        <table style="margin-bottom: 50px;">
+            <tr><td id="stats"><p class="text-primary" style="font-size: 2em">All orders: </p></td><td><p class="text-primary" style="font-size: 2em">@Model["All"]</p></td></tr>
+            <tr><td id="stats"><p class="text-primary" style="font-size: 2em">Opened orders: </p></td><td><p class="text-primary" style="font-size: 2em">@Model["open"]</p></td></tr>
+            <tr><td id="stats"><p class="text-primary" style="font-size: 2em">In Progress orders: </p></td><td><p class="text-primary" style="font-size: 2em">@Model["inprogress"]</p></td></tr>
+            <tr><td id="stats"><p class="text-primary" style="font-size: 2em">Completed orders: </p></td><td><p class="text-primary" style="font-size: 2em">@Model["complete"]</p></td></tr>
+            <tr<td></td></tr>
+        </table>
+    </div>
+
+    <div id="buttons">
+        <a asp-controller="Admin" asp-action="CreateRole"><button class="btn btn-primary">Create a new user role</button></a><br />
+        <a asp-area="" asp-controller="Admin" asp-action="ListRoles"><button class="btn btn-primary">List of Roles</button></a><br />
+        <a asp-area="" asp-controller="Admin" asp-action="ListUsers"><button class="btn btn-primary">List of Users</button></a><br />
+        <a asp-area="" asp-controller="Documents" asp-action="AdminUpload"><button class="btn btn-primary">Upload Documents to Item</button></a><br />
+        <a asp-area="" asp-controller="Orders" asp-action="Index"><button class="btn btn-primary">Order List</button></a><br />
+        <a asp-area="" asp-controller="Orders" asp-action="UnpaidOrders"><button class="btn btn-primary">Unpaid Orders</button></a><br />
+        <a asp-area="" asp-controller="Orders" asp-action="IncompleteOrders"><button class="btn btn-primary">Incomplete Orders</button></a><br />
+    </div>
+</div>

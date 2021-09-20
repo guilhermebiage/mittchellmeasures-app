@@ -58,6 +58,31 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
 
+/* Custom Items */
+
+.customTable {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+    border-width: 2px;
+    border-color: #000000;
+    border-style: solid;
+    color: #000000;
+}
+
+    .customTable td, .customTable th {
+        border-width: 2px;
+        border-color: #000000;
+        border-style: solid;
+        padding: 5px;
+    }
+
+    .customTable thead {
+        background-color: #FFFFFF;
+    }
+
+/* Normal Theme Items */
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -1682,16 +1707,19 @@ pre code {
 .table-dark,
 .table-dark > th,
 .table-dark > td {
-  background-color: #c6c8ca;
+    background-color: #c6c8ca;
+    border: 1px white;
 }
 
 .table-hover .table-dark:hover {
-  background-color: #b9bbbe;
+    background-color: #b9bbbe;
+    border: 1px white;
 }
 
 .table-hover .table-dark:hover > td,
 .table-hover .table-dark:hover > th {
   background-color: #b9bbbe;
+z
 }
 
 .table-active,

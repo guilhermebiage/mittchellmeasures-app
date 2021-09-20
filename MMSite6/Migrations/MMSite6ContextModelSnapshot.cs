@@ -15,7 +15,7 @@ namespace MMSite6.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -65,6 +65,8 @@ namespace MMSite6.Migrations
 
                     b.Property<string>("companyName");
 
+                    b.Property<DateTime>("dateCreated");
+
                     b.Property<string>("firstName");
 
                     b.Property<string>("lastName");
@@ -79,7 +81,74 @@ namespace MMSite6.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("ASPNetUsers");
+                });
+
+            modelBuilder.Entity("MMSite6.Models.Document", b =>
+                {
+                    b.Property<int>("fileId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("documentPath");
+
+                    b.Property<int?>("itemId");
+
+                    b.Property<string>("uploadedBy");
+
+                    b.HasKey("fileId");
+
+                    b.HasIndex("itemId");
+
+                    b.ToTable("Documents");
+                });
+
+            modelBuilder.Entity("MMSite6.Models.Item", b =>
+                {
+                    b.Property<int>("itemId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("address");
+
+                    b.Property<double>("estimateCost");
+
+                    b.Property<int>("orderId");
+
+                    b.Property<int>("sqft");
+
+                    b.HasKey("itemId");
+
+                    b.HasIndex("orderId");
+
+                    b.ToTable("Item");
+                });
+
+            modelBuilder.Entity("MMSite6.Models.Order", b =>
+                {
+                    b.Property<int>("orderId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("desc")
+                        .IsRequired()
+                        .HasMaxLength(450);
+
+                    b.Property<DateTime>("orderDate");
+
+                    b.Property<int>("status");
+
+                    b.Property<string>("summary")
+                        .IsRequired()
+                        .HasMaxLength(450);
+
+                    b.Property<string>("userId");
+
+                    b.HasKey("orderId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -194,6 +263,28 @@ namespace MMSite6.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("MMSite6.Models.Document", b =>
+                {
+                    b.HasOne("MMSite6.Models.Item", "item")
+                        .WithMany("document")
+                        .HasForeignKey("itemId");
+                });
+
+            modelBuilder.Entity("MMSite6.Models.Item", b =>
+                {
+                    b.HasOne("MMSite6.Models.Order", "order")
+                        .WithMany("item")
+                        .HasForeignKey("orderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MMSite6.Models.Order", b =>
+                {
+                    b.HasOne("MMSite6.Areas.Identity.Data.MMSite6User", "user")
+                        .WithMany()
+                        .HasForeignKey("userId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
